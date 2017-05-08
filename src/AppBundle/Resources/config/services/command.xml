@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="app.uuid_generator.mocked" class="Broadway\UuidGenerator\Testing\MockUuidGenerator">
+            <argument>8a05b7c2-5624-4f0d-a025-6c4001148526</argument>
+        </service>
+
+        <service id="app.command.initialize_cart" class="AppBundle\Command\PickUpCartCommand">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="app.command.add_cart_item" class="AppBundle\Command\AddProductToCartCommand">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="app.command.remove_cart_item" class="AppBundle\Command\RemoveProductFromCartCommand">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="app.command.change_cart_item_quantity" class="AppBundle\Command\ChangeProductQuantityCommand">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="app.command.clear" class="AppBundle\Command\ClearCartCommand">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="app.command.show_recorded_events" class="AppBundle\Command\ShowRecordedEvents">
+            <argument type="service" id="broadway.event_store.dbal" />
+            <argument type="service" id="app.uuid_generator.mocked" />
+            <tag name="console.command" />
+        </service>
+    </services>
+</container>

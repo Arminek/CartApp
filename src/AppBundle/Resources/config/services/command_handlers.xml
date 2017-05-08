@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="app.command_handler.add_cart_item" class="Cart\Application\CommandHandler\AddProductToCartCommandHandler">
+            <argument type="service" id="app.repository.cart" />
+            <tag name="broadway.command_handler" />
+        </service>
+        <service id="app.command_handler.change_cart_item_quantity" class="Cart\Application\CommandHandler\ChangeProductQuantityCommandHandler">
+            <argument type="service" id="app.repository.cart" />
+            <tag name="broadway.command_handler" />
+        </service>
+        <service id="app.command_handler.clear_cart" class="Cart\Application\CommandHandler\ClearCartCommandHandler">
+            <argument type="service" id="app.repository.cart" />
+            <tag name="broadway.command_handler" />
+        </service>
+        <service id="app.command_handler.initialize_cart" class="Cart\Application\CommandHandler\PickUpCartCommandHandler">
+            <argument type="service" id="app.repository.cart" />
+            <argument type="service" id="app.factory.cart" />
+            <tag name="broadway.command_handler" />
+        </service>
+        <service id="app.command_handler.remove_cart_item" class="Cart\Application\CommandHandler\RemoveProductFromCartCommandHandler">
+            <argument type="service" id="app.repository.cart" />
+            <tag name="broadway.command_handler" />
+        </service>
+    </services>
+</container>

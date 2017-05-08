@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <imports>
+        <import resource="services/command.xml"/>
+        <import resource="services/command_handlers.xml"/>
+    </imports>
+
+    <services>
+        <service id="app.controller.cart" class="AppBundle\Controller\CartController">
+            <argument type="service" id="broadway.command_handling.command_bus" />
+        </service>
+
+        <service id="app.available_currencies_provider.iso_currencies" class="Cart\Application\Adapter\AvailableCurrencies\ISOCurrenciesProvider" />
+
+        <service id="app.factory.cart" class="Cart\Application\Factory\CartAggregateFactory">
+            <argument type="service" id="app.available_currencies_provider.iso_currencies" />
+        </service>
+
+        <service id="app.repository.cart" class="Broadway\EventSourcing\EventSourcingRepository">
+            <argument type="service" id="broadway.event_store" />
+            <argument type="service" id="broadway.event_handling.event_bus" />
+            <argument type="string">Cart\Domain\Model\Cart</argument>
+            <argument type="service" id="app.factory.cart" />
+        </service>
+
+        <service id="app.repository.decorating_cart" class="Cart\Infrastructure\Repository\BroadwayCartRepository" decorates="app.repository.cart">
+            <argument type="service" id="app.repository.decorating_cart.inner" />
+        </service>
+
+        <service id="app.producer.cart_publisher" class="Cart\Infrastructure\Producer\CartPublisher">
+            <argument type="service" id="app.producer.cart" />
+            <tag name="broadway.domain.event_listener" />
+        </service>
+    </services>
+</container>
